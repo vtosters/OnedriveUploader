@@ -24,3 +24,10 @@
 ## Запуск
 `dotnet OnedriveUploader.dll`
 или через Docker-файл
+
+## API
+Загрузить файл через REST API
+
+**POST**: /api/upload?token=**UploaderPassword**
+
+`Content-Type: multipart/form-data`

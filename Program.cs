@@ -7,6 +7,7 @@ using OnedriveUploader.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizePage("/Upload");
@@ -57,6 +58,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapControllers();
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
