@@ -1,0 +1,42 @@
+@page
+@model OnedriveUploader.Pages.Upload
+
+@{
+    Layout = Layout;
+}
+
+
+<!DOCTYPE html>
+<div class="d-flex flex-column justify-content-center align-items-center vh-100">
+    <div class="col-10">
+        <form method="post" class="input-group" enctype="multipart/form-data">
+            <input asp-for="UploadedFile" type="file" class="form-control">
+            <input class="input-group-text" type="submit" value="Загрузить файл">
+        </form>
+    </div>
+    <div class="col-10 mt-2">
+        <div class="input-group">
+            <span class="input-group-text">Прямая ссылка</span>
+            <input type="text" class="form-control" value="@Model.DirectUrl" readonly id="directurl"/>
+            <button type="button" class="btn btn-outline-primary" id="copybtn"
+                    data-bs-trigger="click" title="Скопировано!"
+                    onclick="copy()">Копировать</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+function copy() {
+    var text = document.getElementById("directurl");
+    navigator.clipboard.writeText(text.value);
+}
+var copyTooltip = document.getElementById('copybtn');
+var tooltip = new bootstrap.Tooltip(copyTooltip)
+
+$(document).ready(function() {
+    copyTooltip.addEventListener('shown.bs.tooltip', function() {
+        setTimeout(function () { tooltip.hide();}, 1000);
+    })
+})
+</script>
