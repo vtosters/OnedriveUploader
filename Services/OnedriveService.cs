@@ -23,37 +23,6 @@ public class OnedriveService
         _graphClient = new GraphServiceClient(credential, scopes);
     }
     
-
-    public async Task UploadFile(string fileName, Stream stream)
-    {
-        var itemPath = Uri.EscapeUriString(fileName);
-        var size = stream.Length / 1000;
-        _logger.LogInformation($"Stream size: {size} KB");
-        if (size/1000 > 4)
-        {
-            // Allows slices of a large file to be uploaded 
-            // Optional but supports progress and resume capabilities if needed
-            await UploadLargeFile(itemPath, stream);
-        }
-        else
-        {
-            try
-            {
-                // Uploads entire file all at once. No support for reporting progress.
-                var driveItem = await _graphClient.Me.Drive.Root.ItemWithPath(itemPath)
-                    .Content
-                    .Request()
-                    .PutAsync<DriveItem>(stream);
-                _logger.LogInformation($"Upload complete: {driveItem.Name}");
-            }
-            catch (ServiceException ex)
-            {
-                _logger.LogError($"Error uploading: {ex.ToString()}");
-                throw;
-            }
-        }
-    }
-    
     public async Task<string> UploadLargeFile(string itemPath, Stream stream)
     {
         var uploadProps = new DriveItemUploadableProperties
